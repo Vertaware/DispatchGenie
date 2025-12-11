@@ -15,10 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "paths": {
-      "~/enums/*": ["./src/shared/enums/*"]
-    }
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*", "src/**/*.json"],
   "exclude": ["dist", "node_modules", "test", "**/*spec.ts"]
