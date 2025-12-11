@@ -5,9 +5,9 @@ import { CreateUserCommand, ListUsersQuery } from '../../../application/users/us
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { UserRole } from '../../shared/enums/index';
+import { UserRole } from '../../../shared/enums/index';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AuthenticatedUser } from '../../shared/enums/index';
+import { AuthenticatedUser } from '../../../shared/enums/index';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')

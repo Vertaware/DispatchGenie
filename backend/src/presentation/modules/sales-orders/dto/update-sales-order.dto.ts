@@ -15,7 +15,7 @@ import {
   SalesOrderStatus,
   TruckSize,
   TruckType,
-} from "../../shared/enums/index";
+} from "../../../../shared/enums/index";
 import { SalesOrderArticleDto } from "./create-sales-order.dto";
 
 export class UpdateSalesOrderDto {

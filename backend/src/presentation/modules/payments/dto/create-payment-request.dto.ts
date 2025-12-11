@@ -8,7 +8,7 @@ import {
   ValidateIf,
   IsDateString,
 } from 'class-validator';
-import { PaymentRequestType } from '../../shared/enums/index';
+import { PaymentRequestType } from '../../../../shared/enums/index';
 
 export class CreatePaymentRequestDto {
   @IsString()

@@ -35,7 +35,7 @@ import { SubscriptionGuard } from '../../guards/subscription.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
 import { Roles } from '../../decorators/roles.decorator';
-import { AuthenticatedUser, UserRole } from '../../shared/enums/index';
+import { AuthenticatedUser, UserRole } from '../../../shared/enums/index';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,

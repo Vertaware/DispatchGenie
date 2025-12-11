@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { TenantSubscriptionStatus } from '../../shared/enums/index';
+import { TenantSubscriptionStatus } from '../../../../shared/enums/index';
 
 export class CreateTenantDto {
   @IsString()
