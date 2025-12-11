@@ -5,5 +5,4 @@ coverage
 uploads
 .env
 *.log
-package-lock.json
 pnpm-lock.yaml
