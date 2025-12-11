@@ -1,5 +1,5 @@
-import type { PaginatedResult } from "~/domain/entities/pagination";
 import type { Article, ArticleSearchParams } from "~/domain/entities/article";
+import type { PaginatedResult } from "~/domain/entities/pagination";
 import api from "../configs/axios.config";
 
 export async function searchArticles(params: ArticleSearchParams = {}) {
@@ -14,9 +14,6 @@ export async function searchArticles(params: ArticleSearchParams = {}) {
     searchParams.append("pageSize", params.pageSize.toString());
   }
 
-  const response = await api.get<PaginatedResult<Article>>(
-    `/articles?${searchParams.toString()}`
-  );
+  const response = await api.get<PaginatedResult<Article>>(`/articles?${searchParams.toString()}`);
   return response.data;
 }
-

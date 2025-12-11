@@ -6,19 +6,8 @@ import { IoAdd, IoNotificationsOutline } from "react-icons/io5";
 import { UserMenu } from "~/components/common";
 import BeneficiaryRecordModal from "./components/beneficiary-record-modal";
 
-type HeaderProps = {
-  onBeneficiaryCreated?: () => void;
-};
-
-export default function Header({ onBeneficiaryCreated }: HeaderProps) {
+export default function Header() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
-
-  const handleSuccess = () => {
-    setOpenCreateModal(false);
-    if (onBeneficiaryCreated) {
-      onBeneficiaryCreated();
-    }
-  };
 
   return (
     <div className="flex items-center justify-between px-6 py-2">
@@ -33,11 +22,7 @@ export default function Header({ onBeneficiaryCreated }: HeaderProps) {
         >
           <span className="capitalize text-white">Add New Beneficiary</span>
         </Button>
-        <BeneficiaryRecordModal
-          open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
-          onSuccess={handleSuccess}
-        />
+        <BeneficiaryRecordModal open={openCreateModal} onClose={() => setOpenCreateModal(false)} />
         <Button className="flex items-center justify-center">
           <IoNotificationsOutline className="text-xl" />
         </Button>

@@ -90,9 +90,7 @@ export default function GateTable({
           </div>
         </td>
         <td className="px-4 py-3 text-sm text-gray-700">{gate.soNumber || "—"}</td>
-        <td className="px-4 py-3 text-sm text-gray-700">
-          {gate.vehicle?.placedTruckType || gate.vehicle?.truckType || "—"}
-        </td>
+        <td className="px-4 py-3 text-sm text-gray-700">{gate.vehicle?.placedTruckType || "—"}</td>
         <td className="px-4 py-3">
           <span
             className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${

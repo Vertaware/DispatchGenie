@@ -12,4 +12,3 @@ export interface ArticleSearchParams {
   page?: number;
   pageSize?: number;
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
 import { Breadcrumbs, Typography } from "@mui/material";
-import Link from "next/Link";
+import Link from "next/link";
 import { UserMenu } from "~/components/common";
 
 interface HeaderProps {

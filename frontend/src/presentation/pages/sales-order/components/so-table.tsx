@@ -282,7 +282,9 @@ export default function SOTable({
         const value = row.articleDescription;
         return (
           <div className="w-full truncate text-sm text-gray-700">
-            <Tooltip title={value ?? "—"}>{value ?? "—"}</Tooltip>
+            <Tooltip title={value ?? "—"}>
+              <span>{value ?? "—"}</span>
+            </Tooltip>
           </div>
         );
       }
