@@ -9,7 +9,7 @@ import { SubscriptionGuard } from '../../guards/subscription.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AuthenticatedUser, UserRole } from '~/enums/index';
+import { AuthenticatedUser, UserRole } from '../../../shared/enums/index';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Accounting')

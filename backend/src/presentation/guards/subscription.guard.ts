@@ -7,7 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { AuthenticatedUser, TenantSubscriptionStatus } from '~/enums/index';
+import { AuthenticatedUser, TenantSubscriptionStatus } from '../../shared/enums/index';
 
 @Injectable()
 export class SubscriptionGuard implements CanActivate {

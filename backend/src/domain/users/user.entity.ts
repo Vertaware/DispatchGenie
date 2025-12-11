@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { UserRole } from '~/enums/index';
+import { UserRole } from '../../shared/enums/index';
 
 export interface UserProps {
   id: string;

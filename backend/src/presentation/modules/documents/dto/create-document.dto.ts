@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { DocumentType } from '~/enums/index';
+import { DocumentType } from '../../shared/enums/index';
 
 export class CreateDocumentDto {
   @IsEnum(DocumentType)

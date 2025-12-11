@@ -9,7 +9,7 @@ import {
 } from '../../../application/auth/auth.handlers';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AuthenticatedUser } from '~/enums/index';
+import { AuthenticatedUser } from '../../shared/enums/index';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')

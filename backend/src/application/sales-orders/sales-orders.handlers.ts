@@ -19,7 +19,7 @@ import {
   SalesOrderStatus,
   TruckType,
   UserRole,
-} from "~/enums/index";
+} from "../../shared/enums/index";
 import ExcelJS from "exceljs";
 import { Prisma, $Enums } from "@prisma/client";
 import {

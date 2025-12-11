@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { PaginatedResult } from '~/enums/index';
+import { PaginatedResult } from '../../shared/enums/index';
 
 export interface ArticleDto {
   id: string;

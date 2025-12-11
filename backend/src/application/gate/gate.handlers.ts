@@ -17,7 +17,7 @@ import {
   TruckType,
   UserRole,
   VehicleStatus,
-} from '~/enums/index';
+} from '../../shared/enums/index';
 import {
   assertForwardSalesOrderStatus,
   assertForwardVehicleStatus,

@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { InvoiceStatus } from '~/enums/index';
+import { InvoiceStatus } from '../../shared/enums/index';
 
 export interface InvoiceProps {
   id: string;

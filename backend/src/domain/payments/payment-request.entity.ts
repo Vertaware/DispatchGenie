@@ -2,7 +2,7 @@ import { BaseEntity } from '../common/base.entity';
 import {
   PaymentRequestStatus,
   PaymentRequestType,
-} from '~/enums/index';
+} from '../../shared/enums/index';
 
 export interface PaymentRequestProps {
   id: string;

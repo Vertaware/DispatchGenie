@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsString, MaxLength, MinLength } from 'class-validator';
-import { UserRole } from '~/enums/index';
+import { UserRole } from '../../shared/enums/index';
 
 export class CreateUserDto {
   @IsEmail()

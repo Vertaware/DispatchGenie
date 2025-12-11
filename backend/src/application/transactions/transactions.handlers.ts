@@ -13,7 +13,7 @@ import {
   BankTransactionDto,
   DocumentType,
   PaginatedResult,
-} from '~/enums/index';
+} from '../../shared/enums/index';
 import { DocumentManager, DocumentFilePayload } from '../../infrastructure/documents/document.manager';
 import ExcelJS from 'exceljs';
 import { Prisma } from '@prisma/client';

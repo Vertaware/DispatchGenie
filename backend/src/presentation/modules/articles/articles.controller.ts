@@ -4,7 +4,7 @@ import { SearchArticlesQuery } from '../../../application/articles/articles.hand
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { SubscriptionGuard } from '../../guards/subscription.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AuthenticatedUser } from '~/enums/index';
+import { AuthenticatedUser } from '../../../shared/enums/index';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Articles')

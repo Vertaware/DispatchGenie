@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { SalesOrderStatus } from '~/enums/index';
+import { SalesOrderStatus } from '../../shared/enums/index';
 
 export type FieldSource = Record<string, 'manual' | 'import' | 'image'>;
 

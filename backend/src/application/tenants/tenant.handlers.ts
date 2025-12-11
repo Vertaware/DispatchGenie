@@ -7,7 +7,7 @@ import {
 import { CommandHandler, ICommandHandler, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { StripeService } from '../../infrastructure/adapters/stripe.service';
-import { TenantDto, TenantSubscriptionStatus, UserRole } from '~/enums/index';
+import { TenantDto, TenantSubscriptionStatus, UserRole } from '../../shared/enums/index';
 import {
   TenantSubscriptionStatus as PrismaTenantSubscriptionStatus,
   UserRole as PrismaUserRole,

@@ -11,7 +11,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { LoadType, TruckSize, TruckType } from '~/enums/index';
+import { LoadType, TruckSize, TruckType } from '../../shared/enums/index';
 
 export class SalesOrderArticleDto {
   @IsOptional()

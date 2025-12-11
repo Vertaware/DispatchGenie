@@ -22,7 +22,7 @@ import {
 import { JwtAuthGuard } from "../../guards/jwt-auth.guard";
 import { SubscriptionGuard } from "../../guards/subscription.guard";
 import { CurrentUser } from "../../decorators/current-user.decorator";
-import { AuthenticatedUser } from "~/enums/index";
+import { AuthenticatedUser } from "../../shared/enums/index";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { LocalStorageService } from "../../../infrastructure/storage/local-storage.service";
 import { type Express, Response, type Request } from "express";

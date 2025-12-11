@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { LoadType, SalesOrderDto, TruckType, VehicleStatus } from '~/enums/index';
+import { LoadType, SalesOrderDto, TruckType, VehicleStatus } from '../../shared/enums/index';
 
 export class SearchBySoNumberQuery {
   constructor(

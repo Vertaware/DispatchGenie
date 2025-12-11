@@ -19,7 +19,7 @@ import {
   VehicleDto,
   VehicleInvoiceStatus,
   VehicleStatus,
-} from "~/enums/index";
+} from "../../shared/enums/index";
 import ExcelJS from "exceljs";
 import {
   DocumentManager,

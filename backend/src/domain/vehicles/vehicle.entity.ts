@@ -4,7 +4,7 @@ import {
   TruckType,
   VehicleInvoiceStatus,
   VehicleStatus,
-} from '~/enums/index';
+} from '../../shared/enums/index';
 
 export interface VehicleProps {
   id: string;

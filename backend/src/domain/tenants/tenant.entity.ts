@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { TenantSubscriptionStatus } from '~/enums/index';
+import { TenantSubscriptionStatus } from '../../shared/enums/index';
 
 export interface TenantProps {
   id: string;

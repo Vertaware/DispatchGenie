@@ -9,7 +9,7 @@ import {
   QueryHandler,
 } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { BeneficiaryDto, PaginatedResult } from '~/enums/index';
+import { BeneficiaryDto, PaginatedResult } from '../../shared/enums/index';
 import ExcelJS from 'exceljs';
 import { Prisma } from '@prisma/client';
 

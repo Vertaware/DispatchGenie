@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { DocumentDto, DocumentType } from '~/enums/index';
+import { DocumentDto, DocumentType } from '../../shared/enums/index';
 import { DocumentManager, DocumentFilePayload } from '../../infrastructure/documents/document.manager';
 
 export class CreateDocumentCommand {

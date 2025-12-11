@@ -21,7 +21,7 @@ import {
   PaymentRequestStatus,
   PaymentRequestType,
   VehicleStatus,
-} from "~/enums/index";
+} from "../../shared/enums/index";
 import ExcelJS from "exceljs";
 
 type SortOrder = "asc" | "desc";

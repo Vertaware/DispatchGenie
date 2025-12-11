@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { DocumentType } from '~/enums/index';
+import { DocumentType } from '../../shared/enums/index';
 
 export interface DocumentProps {
   id: string;

@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler, QueryHandler, IQueryHandler } from '@n
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { SendGridEmailService } from '../../infrastructure/adapters/sendgrid.adapter';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticatedUser, UserRole } from '~/enums/index';
+import { AuthenticatedUser, UserRole } from '../../shared/enums/index';
 import * as bcrypt from 'bcryptjs';
 
 export class RequestOtpCommand {

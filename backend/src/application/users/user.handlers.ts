@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { PaginatedResult, UserDto, UserRole } from '~/enums/index';
+import { PaginatedResult, UserDto, UserRole } from '../../shared/enums/index';
 import { UserRole as PrismaUserRole } from '@prisma/client';
 
 export class CreateUserCommand {

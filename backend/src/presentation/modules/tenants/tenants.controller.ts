@@ -10,9 +10,9 @@ import {
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { UserRole } from '~/enums/index';
+import { UserRole } from '../../shared/enums/index';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import { AuthenticatedUser } from '~/enums/index';
+import { AuthenticatedUser } from '../../shared/enums/index';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tenants')

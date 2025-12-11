@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
-import { TenantDto } from '~/enums/index';
+import { TenantDto } from '../../shared/enums/index';
 
 @Injectable()
 export class StripeService {
