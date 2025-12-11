@@ -22,9 +22,9 @@ import {
 import { JwtAuthGuard } from "../../guards/jwt-auth.guard";
 import { SubscriptionGuard } from "../../guards/subscription.guard";
 import { CurrentUser } from "../../decorators/current-user.decorator";
-import { AuthenticatedUser } from "../../../shared/enums/index";
+import { AuthenticatedUser } from "~/enums/index";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { LocalStorageService } from "../../../infrastructure/storage/local-storage.service";
+import { DocumentManager } from "../../../infrastructure/documents/document.manager";
 import { type Express, Response, type Request } from "express";
 import {
   ApiBearerAuth,
@@ -43,7 +43,7 @@ export class DocumentsController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly storage: LocalStorageService
+    private readonly documentManager: DocumentManager
   ) {}
 
   @Post()
@@ -88,13 +88,13 @@ export class DocumentsController {
     const document = await this.queryBus.execute(
       new GetDocumentQuery(user.tenantId, id)
     );
-    const stream = this.storage.getStream(document.storagePath);
+    const fileData = await this.documentManager.getDocumentFile(user.tenantId, id);
     res.setHeader("Content-Type", document.mimeType);
     res.setHeader(
       "Content-Disposition",
       `inline; filename="${document.fileName}"`
     );
-    stream.pipe(res);
+    res.send(fileData);
   }
 
   @Get(":id/url")

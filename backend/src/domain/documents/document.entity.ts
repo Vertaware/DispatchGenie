@@ -1,5 +1,5 @@
 import { BaseEntity } from '../common/base.entity';
-import { DocumentType } from '../../shared/enums/index';
+import { DocumentType } from '~/enums/index';
 
 export interface DocumentProps {
   id: string;
@@ -7,7 +7,7 @@ export interface DocumentProps {
   type: DocumentType;
   fileName: string;
   mimeType: string;
-  storagePath: string;
+  storagePath?: string; // Deprecated: kept for backward compatibility
   createdAt: Date;
   updatedAt: Date;
 }

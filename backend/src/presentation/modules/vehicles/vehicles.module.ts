@@ -3,11 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { VehiclesController } from './vehicles.controller';
 import { VehicleHandlers } from '../../../application/vehicles/vehicles.handlers';
 import { DocumentManager } from '../../../infrastructure/documents/document.manager';
-import { LocalStorageService } from '../../../infrastructure/storage/local-storage.service';
 
 @Module({
   imports: [CqrsModule],
   controllers: [VehiclesController],
-  providers: [...VehicleHandlers, DocumentManager, LocalStorageService],
+  providers: [...VehicleHandlers, DocumentManager],
 })
 export class VehiclesModule {}

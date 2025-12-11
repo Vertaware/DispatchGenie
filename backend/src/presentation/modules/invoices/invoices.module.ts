@@ -3,11 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { InvoicesController } from './invoices.controller';
 import { InvoiceHandlers } from '../../../application/invoices/invoices.handlers';
 import { DocumentManager } from '../../../infrastructure/documents/document.manager';
-import { LocalStorageService } from '../../../infrastructure/storage/local-storage.service';
 
 @Module({
   imports: [CqrsModule],
   controllers: [InvoicesController],
-  providers: [...InvoiceHandlers, DocumentManager, LocalStorageService],
+  providers: [...InvoiceHandlers, DocumentManager],
 })
 export class InvoicesModule {}

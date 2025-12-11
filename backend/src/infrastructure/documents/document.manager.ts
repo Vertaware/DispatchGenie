@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DocumentType } from '../../shared/enums/index';
+import { DocumentType } from '~/enums/index';
 import { PrismaService } from '../prisma/prisma.service';
-import { LocalStorageService } from '../storage/local-storage.service';
 
 export interface DocumentFilePayload {
   buffer: Buffer;
@@ -11,29 +10,20 @@ export interface DocumentFilePayload {
 
 @Injectable()
 export class DocumentManager {
-  constructor(
-    private readonly storage: LocalStorageService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async createDocument(
     tenantId: string,
     type: DocumentType,
     file: DocumentFilePayload,
   ) {
-    const storagePath = await this.storage.saveFile({
-      buffer: file.buffer,
-      fileName: `${Date.now()}-${file.originalName}`,
-      mimeType: file.mimeType,
-      tenantId,
-    });
     return this.prisma.document.create({
       data: {
         tenantId,
         type,
         fileName: file.originalName,
         mimeType: file.mimeType,
-        storagePath,
+        fileData: new Uint8Array(file.buffer),
       },
     });
   }
@@ -47,6 +37,16 @@ export class DocumentManager {
     }
 
     await this.prisma.document.delete({ where: { id: document.id } });
-    await this.storage.deleteFile(document.storagePath);
+  }
+
+  async getDocumentFile(tenantId: string, documentId: string): Promise<Buffer> {
+    const document = await this.prisma.document.findFirst({
+      where: { id: documentId, tenantId },
+      select: { fileData: true },
+    });
+    if (!document || !document.fileData) {
+      throw new NotFoundException('Document file not found');
+    }
+    return Buffer.from(document.fileData);
   }
 }

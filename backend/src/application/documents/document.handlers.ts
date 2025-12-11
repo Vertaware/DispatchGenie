@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { DocumentDto, DocumentType } from '../../shared/enums/index';
+import { DocumentDto, DocumentType } from '~/enums/index';
 import { DocumentManager, DocumentFilePayload } from '../../infrastructure/documents/document.manager';
 
 export class CreateDocumentCommand {
@@ -42,7 +42,7 @@ export class CreateDocumentHandler
       type: document.type as DocumentType,
       fileName: document.fileName,
       mimeType: document.mimeType,
-      storagePath: document.storagePath,
+      storagePath: document.storagePath ?? undefined,
       viewerUrl: `/documents/${document.id}`,
       createdAt: document.createdAt.toISOString(),
       updatedAt: document.updatedAt.toISOString(),
@@ -67,7 +67,7 @@ export class GetDocumentHandler implements IQueryHandler<GetDocumentQuery, Docum
       type: document.type as DocumentType,
       fileName: document.fileName,
       mimeType: document.mimeType,
-      storagePath: document.storagePath,
+      storagePath: document.storagePath ?? undefined,
       viewerUrl: `/documents/${document.id}`,
       createdAt: document.createdAt.toISOString(),
       updatedAt: document.updatedAt.toISOString(),

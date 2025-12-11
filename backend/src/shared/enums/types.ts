@@ -216,7 +216,7 @@ export interface DocumentDto {
   type: DocumentType;
   fileName: string;
   mimeType: string;
-  storagePath: string;
+  storagePath?: string; // Deprecated: kept for backward compatibility
   viewerUrl: string;
   createdAt: string;
   updatedAt: string;

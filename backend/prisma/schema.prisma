@@ -425,7 +425,8 @@ model Document {
   type        DocumentType
   fileName    String
   mimeType    String
-  storagePath String
+  fileData    Bytes
+  storagePath String?      // Deprecated: kept for backward compatibility
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
