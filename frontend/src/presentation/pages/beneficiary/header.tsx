@@ -1,0 +1,48 @@
+"use client";
+
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { IoAdd, IoNotificationsOutline } from "react-icons/io5";
+import { UserMenu } from "~/components/common";
+import BeneficiaryRecordModal from "./components/beneficiary-record-modal";
+
+type HeaderProps = {
+  onBeneficiaryCreated?: () => void;
+};
+
+export default function Header({ onBeneficiaryCreated }: HeaderProps) {
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const handleSuccess = () => {
+    setOpenCreateModal(false);
+    if (onBeneficiaryCreated) {
+      onBeneficiaryCreated();
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between px-6 py-2">
+      <h1 className="text-2xl font-semibold">Beneficiary</h1>
+      <div className="flex items-center gap-2">
+        <Button
+          variant="contained"
+          color="primary"
+          className="flex items-center gap-2 bg-[#6C63FF] hover:bg-[#5a52e6]"
+          onClick={() => setOpenCreateModal(true)}
+          startIcon={<IoAdd className="text-white" />}
+        >
+          <span className="capitalize text-white">Add New Beneficiary</span>
+        </Button>
+        <BeneficiaryRecordModal
+          open={openCreateModal}
+          onClose={() => setOpenCreateModal(false)}
+          onSuccess={handleSuccess}
+        />
+        <Button className="flex items-center justify-center">
+          <IoNotificationsOutline className="text-xl" />
+        </Button>
+        <UserMenu />
+      </div>
+    </div>
+  );
+}

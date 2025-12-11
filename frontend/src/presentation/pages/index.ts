@@ -1,0 +1,10 @@
+export { default as BeneficiaryPage } from "./beneficiary/beneficiary-page";
+export { default as GatePage } from "./gate/gate-page";
+export { default as InvoicePage } from "./invoices/invoice-page";
+export { default as LoginPage } from "./login/login-page";
+export { default as PaymentsPage } from "./payments/payments-page";
+export { default as SalesOrderFormPage } from "./sales-order-form/sales-order-form-page";
+export { default as SalesOrderPage } from "./sales-order/sales-order-page";
+export { default as TransactionsPage } from "./transactions/transactions-page";
+export { default as UsersPage } from "./users/users-page";
+export { default as VehiclePage } from "./vehicles/vehicle-page";

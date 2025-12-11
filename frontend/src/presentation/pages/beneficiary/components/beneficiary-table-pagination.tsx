@@ -1,0 +1,87 @@
+"use client";
+
+import {
+  IoChevronBack,
+  IoChevronBackOutline,
+  IoChevronForward,
+  IoChevronForwardOutline,
+} from "react-icons/io5";
+
+type BeneficiaryTablePaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  rowsPerPage: number;
+  totalResults: number;
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rowsPerPage: number) => void;
+};
+
+export default function BeneficiaryTablePagination({
+  currentPage,
+  totalPages,
+  rowsPerPage,
+  totalResults,
+  onPageChange,
+  onRowsPerPageChange,
+}: BeneficiaryTablePaginationProps) {
+  const startResult = (currentPage - 1) * rowsPerPage + 1;
+  const endResult = Math.min(currentPage * rowsPerPage, totalResults);
+
+  return (
+    <div className="flex items-center justify-between px-4 py-3">
+      <div className="text-sm text-gray-600">
+        Showing {startResult} to {endResult} of {totalResults} results
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Rows per page</span>
+          <select
+            value={rowsPerPage}
+            onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+            className="rounded border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C63FF]"
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">
+            Page {currentPage} of {totalPages}
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => onPageChange(1)}
+              disabled={currentPage === 1}
+              className="rounded border border-gray-300 p-1.5 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IoChevronBackOutline className="text-gray-600" />
+            </button>
+            <button
+              onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="rounded border border-gray-300 p-1.5 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IoChevronBack className="text-gray-600" />
+            </button>
+            <button
+              onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className="rounded border border-gray-300 p-1.5 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IoChevronForward className="text-gray-600" />
+            </button>
+            <button
+              onClick={() => onPageChange(totalPages)}
+              disabled={currentPage === totalPages}
+              className="rounded border border-gray-300 p-1.5 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IoChevronForwardOutline className="text-gray-600" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

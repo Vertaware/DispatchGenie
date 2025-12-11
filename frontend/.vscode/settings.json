@@ -1,0 +1,15 @@
+{
+  "scss.validate": false, // 👈 SCSS VALIDATION DISABLED
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.formatDocument": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "scss"],
+  "tailwindCSS.experimental.configFile": "src/shared/styles/globals.scss" // 👈 Tailwind auto-completion config for v4
+}

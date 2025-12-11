@@ -1,0 +1,498 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum TenantSubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+enum UserRole {
+  ADMIN
+  ACCOUNTANT
+  LOGISTIC_WORKER
+  SECURITY
+}
+
+enum SalesOrderStatus {
+  INFORMATION_NEEDED
+  ASSIGN_VEHICLE
+  VEHICLE_ASSIGNED
+  ARRIVED
+  GATE_IN
+  LOADING_START
+  LOADING_COMPLETE
+  HOLD
+  DELETED
+  TRIP_INVOICED
+  GATE_OUT
+  IN_JOURNEY
+  COMPLETED
+  INVOICED
+  CANCELLED
+}
+
+enum VehicleStatus {
+  ASSIGNED
+  ARRIVED
+  GATE_IN
+  LOADING_START
+  LOADING_COMPLETE
+  TRIP_INVOICED
+  GATE_OUT
+  IN_JOURNEY
+  COMPLETED
+  INVOICED
+  CANCELLED
+}
+
+enum VehicleInvoiceStatus {
+  NONE
+  INVOICE_CREATED
+  INVOICE_PAID
+}
+
+enum TruckSize {
+  NINE_MT
+  TWELVE_MT
+  SIXTEEN_MT
+  EIGHTEEN_MT
+}
+
+enum TruckType {
+  OPEN
+  CLOSED
+  CLOSED_OPEN
+}
+
+enum LoadType {
+  SINGLE
+  CLUB
+}
+
+enum PaymentRequestType {
+  ADVANCE_SHIPPING
+  BALANCE_SHIPPING
+  FULL_SHIPPING_CHARGES
+  POINT_1_TO_POINT_2_TRANSFER
+  UNLOADING_CHARGE
+  UNLOADING_DETENTION
+  MISCELLANEOUS_CHARGES
+}
+
+enum PaymentRequestStatus {
+  PENDING
+  COMPLETED
+}
+
+
+enum DocumentType {
+  POD
+  LR_COPY
+  INVOICE_PDF
+  VEHICLE_PHOTO
+  PAYMENT_PROOF
+  BENEFICIARY_DOC
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+}
+
+model Tenant {
+  id                 String                   @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  slug               String                   @unique
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  stripeCustomerId   String?
+  subscriptionStatus TenantSubscriptionStatus @default(TRIAL)
+  trialEndsAt        DateTime?
+  isActive           Boolean                  @default(true)
+
+  users                User[]
+  salesOrders          SalesOrder[]
+  vehicles             Vehicle[]
+  beneficiaries        Beneficiary[]
+  paymentRequests      PaymentRequest[]
+  bankTransactions     BankTransaction[]
+  paymentAllocations   PaymentAllocation[]
+  invoices             Invoice[]
+  documents            Document[]
+  vehicleSalesOrders   VehicleSalesOrder[]
+  invoiceVehicleLinks  InvoiceVehicle[]
+  vehicleDocumentLinks VehicleDocument[]
+  gates                Gate[]
+  articles             Article[]
+}
+
+model User {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId          String    @db.ObjectId
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email             String
+  name              String
+  role              UserRole
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastOtpCodeHash   String?
+  lastOtpExpiresAt  DateTime?
+  otpFailedAttempts Int       @default(0)
+  lastLoginAt       DateTime?
+
+  @@unique([tenantId, email])
+}
+
+/**
+ * * DEPRECATED
+ * model SalesOrder {
+ * id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+ * tenantId           String              @db.ObjectId
+ * tenant             Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+ * soNumber           String
+ * soDate             DateTime
+ * customerId         String?
+ * customerName       String?
+ * partyName          String?
+ * town               String?             @map("townName")
+ * pincode            String?             @map("pinCode")
+ * sku                String?
+ * articleDescription String?
+ * soCases            Float?              @map("quantity")
+ * caseLot            String?
+ * truckSize          String?             @map("requestedTruckSize")
+ * category           String?
+ * address            String?
+ * status             SalesOrderStatus    @default(INFORMATION_NEEDED)
+ * finalAmount        Float?
+ * loadingQuantity    Float?
+ * createdFromImport  Boolean             @default(false)
+ * fieldSource        Json?
+ * createdAt          DateTime            @default(now())
+ * updatedAt          DateTime            @updatedAt
+ * vehicleLinks       VehicleSalesOrder[]
+ * paymentRequests    PaymentRequest[]
+ * gates              Gate[]
+ * @@unique([tenantId, soNumber])
+ * }
+ */
+
+model SalesOrder {
+  id                                    String              @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId                              String              @db.ObjectId
+  tenant                                Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  soNumber                              String
+  soDate                                DateTime
+  customerId                            String?
+  customerName                          String?
+  partyName                             String?
+  townName                              String?
+  pinCode                               String?
+  sku                                   String?
+  articleDescription                    String?
+  soCases                               Float?
+  requestedOrderQuantity                Float?
+  caseLot                               String?
+  unitPrice                             Float?
+  plant                                 String?
+  requestedTruckSize                    TruckSize?
+  requestedTruckType                   TruckType?
+  placedTruckSize                       TruckSize?
+  placedTruckType                       TruckType?
+  loadType                              LoadType?
+  category                              String?
+  partyAddress                          String?
+  previousStatus                        SalesOrderStatus?
+  status                                SalesOrderStatus    @default(INFORMATION_NEEDED)
+  finalAmount                           Float?
+  loadingQuantity                       Float?
+  actualUnloadingCharges                Float?
+  otherExpenses                         Float?
+  advancePayment                        Float?
+  finalPayment                          Float?
+  frightCost                            Float?  @default(0)
+  profit                                Float?
+  invoiceEwayBill                       String?
+  lrNumber                              String?
+  tripReferenceNo                       Int?
+  notes                                 String?
+  lrCopyDocumentId                      String?             @db.ObjectId
+  lrCopyDocument                        Document?           @relation("LRCopyDocument", fields: [lrCopyDocumentId], references: [id])
+  podCopyDocumentId                     String?             @db.ObjectId
+  podCopyDocument                       Document?           @relation("PODCopyDocument", fields: [podCopyDocumentId], references: [id])
+  loadingPhotosDocumentIds              Json?
+  advancePaymentScreenshotDocumentId    String?             @db.ObjectId
+  advancePaymentScreenshotDocument      Document?           @relation("AdvancePaymentScreenshotDocument", fields: [advancePaymentScreenshotDocumentId], references: [id])
+  finalPaymentScreenshotDocumentId      String?             @db.ObjectId
+  finalPaymentScreenshotDocument        Document?           @relation("FinalPaymentScreenshotDocument", fields: [finalPaymentScreenshotDocumentId], references: [id])
+  unloadingExpensesScreenshotDocumentId String?             @db.ObjectId
+  unloadingExpensesScreenshotDocument   Document?           @relation("UnloadingExpensesScreenshotDocument", fields: [unloadingExpensesScreenshotDocumentId], references: [id])
+  uid                                   String?
+  duplicates                            Int?
+  flag                                  String?
+  createdFromImport                     Boolean             @default(false)
+  fieldSource                           Json?
+  articles                              Json?
+  createdAt                             DateTime            @default(now())
+  updatedAt                             DateTime            @updatedAt
+  vehicleLinks                          VehicleSalesOrder[]
+  paymentRequests                       PaymentRequest[]
+  gates                                 Gate[]
+
+  @@unique([tenantId, soNumber])
+}
+
+model Vehicle {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId           String               @db.ObjectId
+  tenant             Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  vehicleNumber      String
+  driverName         String?              @map("vehicleName")
+  driverPhoneNumber  String?              @map("driverPhone")
+  asmPhoneNumber     String?
+  placedTruckSize    TruckSize?
+  placedTruckType    TruckType?
+  loadType           LoadType?
+  vehicleAmount      Float?               @default(0) @map("shippingAmount")
+  vehicleExpense     Float?               @default(0) @map("shippingExpense")
+  location           String?
+  unloadedAt         DateTime?
+  billedOn           DateTime?
+  filledOn           DateTime?
+  locationReachedAt  DateTime?
+  unloadedTime       DateTime?
+  dbWaitingTimeHours Float?
+  loadingQuantity    Float?
+  checkInAt          DateTime?
+  gateInAt           DateTime?
+  gateOutAt          DateTime?
+  loadingStartedAt   DateTime?
+  loadingCompletedAt DateTime?
+  notes              String?
+  status             VehicleStatus        @default(ASSIGNED)
+  invoiceStatus      VehicleInvoiceStatus @default(NONE)
+  isPaid             Boolean              @default(false)
+  profit             Float?               @default(0)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  salesOrders     VehicleSalesOrder[]
+  paymentRequests PaymentRequest[]
+  invoiceLinks    InvoiceVehicle[]
+  documents       VehicleDocument[]   @relation("VehicleDocuments")
+  gates           Gate[]
+}
+
+model VehicleSalesOrder {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId     String     @db.ObjectId
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  vehicleId    String     @db.ObjectId
+  vehicle      Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  salesOrderId String     @db.ObjectId
+  salesOrder   SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([vehicleId, salesOrderId])
+  @@index([salesOrderId])
+}
+
+model Beneficiary {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId          String            @db.ObjectId
+  tenant            Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name              String
+  accountNumber     String
+  bankNameAndBranch String
+  ifscCode          String
+  contactInfo       String?
+  documentId        String?           @db.ObjectId
+  document          Document?         @relation("BeneficiaryDocument", fields: [documentId], references: [id])
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  paymentRequests   PaymentRequest[]
+  bankTransactions  BankTransaction[]
+
+  @@unique([tenantId, accountNumber])
+  @@index([documentId])
+}
+
+model PaymentRequest {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId           String               @db.ObjectId
+  tenant             Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  salesOrderId       String               @db.ObjectId
+  salesOrder         SalesOrder           @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+  vehicleId          String               @db.ObjectId
+  vehicle            Vehicle              @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  transactionType    PaymentRequestType
+  requestedAmount    Float
+  paymentDate        DateTime?
+  beneficiaryId      String               @db.ObjectId
+  beneficiary        Beneficiary          @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+  status             PaymentRequestStatus @default(PENDING)
+  hasUnloadingCharge Boolean              @default(false)
+  notes              String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  allocations        PaymentAllocation[]
+
+  @@index([vehicleId])
+}
+
+model BankTransaction {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId          String              @db.ObjectId
+  tenant            Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  transactionCode   String
+  transactionDate   DateTime
+  beneficiaryId     String              @db.ObjectId
+  beneficiary       Beneficiary         @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+  totalPaidAmount   Float
+  paymentDocumentId String              @db.ObjectId
+  paymentDocument   Document            @relation("PaymentProofDocument", fields: [paymentDocumentId], references: [id])
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  allocations       PaymentAllocation[]
+
+  @@unique([tenantId, transactionCode])
+}
+
+model PaymentAllocation {
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId          String          @db.ObjectId
+  tenant            Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  paymentRequestId  String          @db.ObjectId
+  paymentRequest    PaymentRequest  @relation(fields: [paymentRequestId], references: [id], onDelete: Cascade)
+  bankTransactionId String          @db.ObjectId
+  bankTransaction   BankTransaction @relation(fields: [bankTransactionId], references: [id], onDelete: Cascade)
+  allocatedAmount   Float
+  createdAt         DateTime        @default(now())
+
+  @@unique([paymentRequestId, bankTransactionId])
+  @@index([bankTransactionId])
+}
+
+model Invoice {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId          String        @db.ObjectId
+  tenant            Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  invoiceNumber     String
+  date              DateTime
+  invoiceAmount     Float
+  status            InvoiceStatus @default(DRAFT)
+  paidDate          DateTime?
+  paidAmount        Float?
+  invoiceDocumentId String?       @db.ObjectId
+  invoiceDocument   Document?     @relation("InvoicePdfDocument", fields: [invoiceDocumentId], references: [id])
+  totalProfit       Float?        @default(0)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  vehicles InvoiceVehicle[]
+
+  @@unique([tenantId, invoiceNumber])
+}
+
+model InvoiceVehicle {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId  String   @db.ObjectId
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  invoiceId String   @db.ObjectId
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  vehicleId String   @db.ObjectId
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([invoiceId, vehicleId])
+  @@index([vehicleId])
+}
+
+model Document {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId    String       @db.ObjectId
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  type        DocumentType
+  fileName    String
+  mimeType    String
+  storagePath String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  vehiclePhotos                          VehicleDocument[] @relation("VehicleDocuments")
+  beneficiaries                          Beneficiary[]     @relation("BeneficiaryDocument")
+  bankTransactions                       BankTransaction[] @relation("PaymentProofDocument")
+  invoices                               Invoice[]         @relation("InvoicePdfDocument")
+  lrCopySalesOrders                      SalesOrder[]      @relation("LRCopyDocument")
+  podCopySalesOrders                     SalesOrder[]      @relation("PODCopyDocument")
+  advancePaymentScreenshotSalesOrders    SalesOrder[]      @relation("AdvancePaymentScreenshotDocument")
+  finalPaymentScreenshotSalesOrders      SalesOrder[]      @relation("FinalPaymentScreenshotDocument")
+  unloadingExpensesScreenshotSalesOrders SalesOrder[]      @relation("UnloadingExpensesScreenshotDocument")
+}
+
+model VehicleDocument {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId   String   @db.ObjectId
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  vehicleId  String   @db.ObjectId
+  vehicle    Vehicle  @relation("VehicleDocuments", fields: [vehicleId], references: [id], onDelete: Cascade)
+  documentId String   @db.ObjectId
+  document   Document @relation("VehicleDocuments", fields: [documentId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([vehicleId, documentId])
+}
+
+enum GateStatus {
+  CHECK_IN
+  GATE_IN
+  GATE_OUT
+  CANCELLED
+}
+
+model Gate {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId      String      @db.ObjectId
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  vehicleId     String?     @db.ObjectId
+  vehicle       Vehicle?    @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  vehicleNumber String
+  salesOrderId  String?     @db.ObjectId
+  salesOrder    SalesOrder? @relation(fields: [salesOrderId], references: [id], onDelete: SetNull)
+  status        GateStatus  @default(CHECK_IN)
+  checkInAt     DateTime    @default(now())
+  gateInAt      DateTime?
+  gateOutAt     DateTime?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([salesOrderId])
+  @@index([status])
+  @@index([vehicleNumber])
+}
+
+model Article {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  tenantId    String   @db.ObjectId
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([description])
+}
